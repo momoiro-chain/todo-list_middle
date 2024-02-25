@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [todoLIst, setTodoList] = useState<todo[]>([])
+  const [todoList, setTodoList] = useState<todo[]>([]);
   const [title, setTitle] = useState("");
   const [detail, setDetail] = useState("");
 
@@ -12,27 +12,47 @@ function App() {
     progress: string;
     title: string;
     detail: string;
-  }
+  };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-  }
+  };
   const handleDetailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDetail(e.target.value);
-  }
+  };
 
   const onClickAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
     let uuid = crypto.randomUUID();
     e.preventDefault();
-    setTodoList([...todoLIst,{id:uuid,progress:"未着手",title:title,detail:detail}]);
+    setTodoList([
+      ...todoList,
+      { id: uuid, progress: "未着手", title: title, detail: detail },
+    ]);
     setTitle("");
     setDetail("");
-  }
+  };
+
+  const onClickDelete = (id:string) => {
+    const removedList = todoList.filter((todo) => {
+      return todo.id !== id;
+    })
+    setTodoList(removedList);
+  };
 
   return (
     <div className="App">
-      <input type={"text"} placeholder={"title"} value={title} onChange={handleTitleChange} />
-      <input type={"text"} placeholder={"detail"} value={detail} onChange={handleDetailChange}/>
+      <input
+        type={"text"}
+        placeholder={"title"}
+        value={title}
+        onChange={handleTitleChange}
+      />
+      <input
+        type={"text"}
+        placeholder={"detail"}
+        value={detail}
+        onChange={handleDetailChange}
+      />
       <button onClick={onClickAdd}>add</button>
       <select>
         <option>未完了</option>
@@ -41,13 +61,14 @@ function App() {
       </select>
 
       <ul>
-        {todoLIst.map((todo) => {
-          return(
-            <li>
-            {todo.id} {todo.title} {todo.progress} {todo.detail} <button>edit</button>
-            <button>delete</button>
-          </li>
-            )
+        {todoList.map((todo) => {
+          return (
+            <li key={todo.id}>
+              {todo.id} {todo.title} {todo.progress} {todo.detail}{" "}
+              <button>edit</button>
+              <button onClick={() => onClickDelete(todo.id)}>delete</button>
+            </li>
+          );
         })}
       </ul>
     </div>
