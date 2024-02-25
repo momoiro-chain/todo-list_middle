@@ -1,24 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+
+import "./App.css";
 
 function App() {
+  const [todoLIst, setTodoList] = useState<todo[]>([])
+  const [title, setTitle] = useState("");
+  const [detail, setDetail] = useState("");
+
+  type todo = {
+    id: string;
+    progress: string;
+    title: string;
+    detail: string;
+  }
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  }
+  const handleDetailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDetail(e.target.value);
+  }
+
+  const onClickAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
+    let uuid = crypto.randomUUID();
+    e.preventDefault();
+    setTodoList([...todoLIst,{id:uuid,progress:"未着手",title:title,detail:detail}]);
+    setTitle("");
+    setDetail("");
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input type={"text"} placeholder={"title"} value={title} onChange={handleTitleChange} />
+      <input type={"text"} placeholder={"detail"} value={detail} onChange={handleDetailChange}/>
+      <button onClick={onClickAdd}>add</button>
+      <select>
+        <option>未完了</option>
+        <option>進行中</option>
+        <option>完了</option>
+      </select>
+
+      <ul>
+        {todoLIst.map((todo) => {
+          return(
+            <li>
+            {todo.id} {todo.title} {todo.progress} {todo.detail} <button>edit</button>
+            <button>delete</button>
+          </li>
+            )
+        })}
+      </ul>
     </div>
   );
 }
