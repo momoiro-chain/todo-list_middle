@@ -59,6 +59,25 @@ function App() {
   const handleEditDetailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentTodo({ ...currentTodo, detail: e.target.value });
   };
+  //e.target.valueに応じてcurrentTodoの分岐progressを変更
+  const handleEditProgressChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    switch (e.target.value) {
+      case "notStarted":
+        setCurrentTodo({ ...currentTodo, progress: "未着手" });
+        break;
+      case "inProgress":
+        setCurrentTodo({ ...currentTodo, progress: "進行中" });
+        break;
+      case "complete":
+        setCurrentTodo({ ...currentTodo, progress: "完了" });
+        break;
+      }
+  };
+
+
+
   const handleUpdateTodo = (id: string, updatedTodo: todo) => {
     const updatedItem = todoList.map((todo) => {
       return todo.id === id ? updatedTodo : todo;
@@ -116,6 +135,12 @@ function App() {
             value={currentTodo.detail}
             onChange={handleEditDetailChange}
           />
+          <select onChange={handleEditProgressChange}>
+            <option value="all">すべて</option>
+            <option value="notStarted">未着手</option>
+            <option value="inProgress">進行中</option>
+            <option value="complete">完了</option>
+          </select>
           <button type="submit">Update</button>
           <button onClick={() => setIsEditing(false)}>Cancel</button>
         </form>
