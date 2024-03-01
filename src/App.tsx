@@ -73,10 +73,8 @@ function App() {
       case "complete":
         setCurrentTodo({ ...currentTodo, progress: "完了" });
         break;
-      }
+    }
   };
-
-
 
   const handleUpdateTodo = (id: string, updatedTodo: todo) => {
     const updatedItem = todoList.map((todo) => {
@@ -136,7 +134,6 @@ function App() {
             onChange={handleEditDetailChange}
           />
           <select onChange={handleEditProgressChange}>
-            <option value="all">すべて</option>
             <option value="notStarted">未着手</option>
             <option value="inProgress">進行中</option>
             <option value="complete">完了</option>
@@ -174,7 +171,7 @@ function App() {
         {selectedList.map((todo) => {
           return (
             <li key={todo.id}>
-              {todo.id} {todo.progress} {todo.title} {todo.detail}{" "}
+              {todo.progress} {todo.title} {todo.detail}{" "}
               <button onClick={() => onClickEdit(todo)}>edit</button>
               <button onClick={() => onClickDelete(todo.id)}>delete</button>
             </li>
